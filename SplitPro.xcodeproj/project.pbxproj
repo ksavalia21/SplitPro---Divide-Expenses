@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3CE5CBBA2E9C886600F40C9D /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3CE5CBB92E9C886600F40C9D /* FirebaseAuth */; };
+		3CE5CBBC2E9C886600F40C9D /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3CE5CBBB2E9C886600F40C9D /* FirebaseCore */; };
+		3CE5CBCF2E9C949E00F40C9D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3CE5CBCE2E9C949E00F40C9D /* FirebaseFirestore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		3CE5CB8D2E9C7F8700F40C9D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +58,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CE5CBBC2E9C886600F40C9D /* FirebaseCore in Frameworks */,
+				3CE5CBBA2E9C886600F40C9D /* FirebaseAuth in Frameworks */,
+				3CE5CBCF2E9C949E00F40C9D /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +87,7 @@
 				3CE5CB7F2E9C7F8600F40C9D /* SplitPro */,
 				3CE5CB8F2E9C7F8700F40C9D /* SplitProTests */,
 				3CE5CB992E9C7F8700F40C9D /* SplitProUITests */,
+				3CE5CBCD2E9C949E00F40C9D /* Frameworks */,
 				3CE5CB7E2E9C7F8600F40C9D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +100,13 @@
 				3CE5CB962E9C7F8700F40C9D /* SplitProUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		3CE5CBCD2E9C949E00F40C9D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,6 +129,9 @@
 			);
 			name = SplitPro;
 			packageProductDependencies = (
+				3CE5CBB92E9C886600F40C9D /* FirebaseAuth */,
+				3CE5CBBB2E9C886600F40C9D /* FirebaseCore */,
+				3CE5CBCE2E9C949E00F40C9D /* FirebaseFirestore */,
 			);
 			productName = SplitPro;
 			productReference = 3CE5CB7D2E9C7F8600F40C9D /* SplitPro.app */;
@@ -195,6 +215,9 @@
 			);
 			mainGroup = 3CE5CB742E9C7F8500F40C9D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3CE5CBB82E9C886600F40C9D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3CE5CB7E2E9C7F8600F40C9D /* Products */;
 			projectDirPath = "";
@@ -578,6 +601,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3CE5CBB82E9C886600F40C9D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3CE5CBB92E9C886600F40C9D /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CE5CBB82E9C886600F40C9D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		3CE5CBBB2E9C886600F40C9D /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CE5CBB82E9C886600F40C9D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		3CE5CBCE2E9C949E00F40C9D /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CE5CBB82E9C886600F40C9D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3CE5CB752E9C7F8600F40C9D /* Project object */;
 }
