@@ -18,7 +18,11 @@ SplitPro is a modern iOS expense-sharing application built with SwiftUI and Fire
 - **Friend Management** - Add and manage friends for expense sharing
 - **Private IOUs** - Track one-on-one debts between friends
 - **Group Expenses** - Create groups and split expenses among multiple people
-- **Equal Split** - Automatic equal distribution of costs
+- **Advanced Splitting** - Equal, exact amounts, or percentage-based splits
+- **Receipt Attachments** - Attach receipt images to expenses (mock implementation)
+- **Settlement Tracking** - Record payments to settle debts
+- **Debt Simplification** - Algorithm to minimize number of transactions
+- **Global Dashboard** - Comprehensive financial overview across all groups
 - **Real-time Updates** - Instant synchronization using Firestore snapshot listeners
 - **Balance Tracking** - Visual balance displays with color-coded indicators
 - **Clean UI/UX** - Modern, intuitive interface with smooth animations
@@ -50,6 +54,26 @@ SplitPro is a modern iOS expense-sharing application built with SwiftUI and Fire
 - Per-group balance tracking
 - Expense history with member breakdown
 
+### ✅ Sprint 3: Advanced Splitting and Real-Time Ledger (Completed)
+- SplitType enum with three split methods (equal, exact amounts, percentages)
+- Dynamic split configuration UI that adapts to selected type
+- Exact amounts split with live validation (sum must equal total)
+- Percentage split with live validation (must sum to 100%)
+- Receipt attachment with mock Firebase Storage integration
+- Enhanced expense rows showing split type and receipt indicators
+- Real-time activity feed with newest expenses first
+
+### ✅ Sprint 4: Settlement and Final Dashboard (Completed)
+- Settlement model for recording debt payments
+- Global balance aggregation across all groups and IOUs
+- BalanceCalculator with debt simplification algorithm
+- RecordSettlementView for logging settlements
+- "Settle Up" button in group details
+- Simplified payment suggestions (minimum transactions)
+- Comprehensive global dashboard with "You Owe" and "You Are Owed" cards
+- Individual balance breakdown by friend/member
+- Real-time balance updates throughout the app
+
 ---
 
 ## 🏗️ Architecture
@@ -70,23 +94,26 @@ SplitPro/
 │   ├── User.swift                 # User profile data model
 │   ├── PrivateExpense.swift       # 1-on-1 IOU model
 │   ├── Group.swift                # Expense group model
-│   └── GroupExpense.swift         # Group expense model
+│   ├── GroupExpense.swift         # Group expense model (with SplitType enum)
+│   └── Settlement.swift           # Settlement/payment model
 ├── Services/
-│   └── FirestoreService.swift     # Firestore database operations
+│   ├── FirestoreService.swift     # Firestore database operations
+│   └── BalanceCalculator.swift    # Balance aggregation & debt simplification
 └── Views/
     ├── AppRouterView.swift        # Authentication routing
     ├── LoadingView.swift          # Loading state screen
     ├── SignInView.swift           # User login
     ├── SignUpView.swift           # User registration
-    ├── HomeView.swift             # Tab-based home (Dashboard, Groups, Friends, Profile)
+    ├── HomeView.swift             # Global dashboard with balance cards
     ├── FriendsView.swift          # Friends list
     ├── AddFriendView.swift        # Friend search and add
     ├── FriendDetailsView.swift    # Private IOU balance with friend
     ├── LogIOUView.swift           # Log private expense
     ├── GroupsView.swift           # Groups list
     ├── CreateGroupView.swift      # Group creation
-    ├── GroupDetailsView.swift     # Group dashboard and balance
-    └── AddExpenseView.swift       # Group expense logging
+    ├── GroupDetailsView.swift     # Group dashboard with simplified payments
+    ├── AddExpenseView.swift       # Advanced expense logging (3 split types)
+    └── RecordSettlementView.swift # Record debt settlement/payment
 ```
 
 ### Firestore Data Structure
@@ -210,9 +237,31 @@ artifacts/
 2. Tap "Add Expense"
 3. Enter description and amount
 4. Select who paid
-5. Review the equal split preview
-6. Tap "Save"
-7. Balance updates in real-time!
+5. Choose split type:
+   - **Equal**: Divides equally among all members
+   - **Exact Amounts**: Enter specific dollar amounts for each member
+   - **Percentages**: Enter percentage owed by each member (must sum to 100%)
+6. (Optional) Attach a receipt
+7. Review the split preview
+8. Tap "Save"
+9. Balance updates in real-time!
+
+### Recording a Settlement
+1. Open a group from the Groups list
+2. Tap "Settle Up"
+3. Select who you're settling with
+4. Enter the amount
+5. Choose direction (you pay or you receive)
+6. (Optional) Add a note
+7. Tap "Record"
+8. Balances automatically update everywhere
+
+### Viewing Global Dashboard
+1. Navigate to **Dashboard** tab
+2. View "You Owe" and "You Are Owed" summary cards
+3. See net balance calculation
+4. Scroll to "Individual Balances" for per-person breakdown
+5. All data updates in real-time as expenses/settlements are added
 
 ### Logging a Private IOU
 1. Navigate to **Friends** tab
@@ -264,18 +313,41 @@ charlie@test.com / password123
 3. Sign in as Bob, verify Alice appears in friends list
 4. Test two-way relationship works
 
-**Scenario 2: Equal Split Calculation**
-1. Create a group with 3 members
-2. User A pays $60 for dinner
-3. Verify each person owes $20
-4. Verify User A's balance shows +$40 (owed)
-5. Verify other members show -$20 (owe)
+**Scenario 2: Split Calculation**
+1. Create a group with 3 members (Alice, Bob, Charlie)
+2. Test Equal Split:
+   - Alice pays $60 for dinner, split equally
+   - Verify each owes $20, Alice's balance is +$40
+3. Test Exact Amounts:
+   - Bob pays $60, Alice owes $30, Charlie owes $30
+   - Verify validation prevents saving if amounts don't sum to total
+4. Test Percentages:
+   - Charlie pays $100, Alice 50%, Bob 30%, Charlie 20%
+   - Verify validation prevents saving if percentages don't sum to 100%
+5. Check dashboard shows correct total balances
 
 **Scenario 3: Real-Time Updates**
 1. Sign in as User A on one device
 2. Sign in as User B on another device
 3. User A adds an expense to shared group
 4. Verify User B sees the update instantly
+5. User B records a settlement
+6. Verify User A's dashboard updates immediately
+
+**Scenario 4: Debt Simplification**
+1. Create a group with 4 members
+2. Add multiple expenses with different payers
+3. Open group details
+4. Scroll to "Simplified Payments" section
+5. Verify it shows minimum number of transactions
+6. Check that complex multi-party debts are simplified
+
+**Scenario 5: Settlement and Balance**
+1. Note your balance with a friend in the dashboard
+2. Record a settlement payment
+3. Verify dashboard balance decreases
+4. Check group's simplified payments update
+5. Confirm all balances recalculate correctly
 
 ---
 
@@ -300,11 +372,16 @@ charlie@test.com / password123
 
 ## 🛣️ Roadmap
 
+### Completed Sprints
+- [x] **Sprint 0**: Foundation and Authentication
+- [x] **Sprint 1**: User Profile and Private IOUs
+- [x] **Sprint 2**: Core Group Management and Basic Expenses
+- [x] **Sprint 3**: Advanced Splitting and Real-Time Ledger
+- [x] **Sprint 4**: Settlement and Final Dashboard
+
 ### Planned Features
-- [ ] **Sprint 3**: Unequal splits (by percentage, shares, exact amounts)
-- [ ] **Sprint 4**: Settlement suggestions and payment tracking
 - [ ] **Sprint 5**: Expense categories and filtering
-- [ ] **Sprint 6**: Receipt scanning and image upload
+- [ ] **Sprint 6**: Real receipt scanning with Firebase Storage
 - [ ] **Sprint 7**: Payment integration (Venmo, PayPal, etc.)
 - [ ] **Sprint 8**: Push notifications for new expenses
 - [ ] **Sprint 9**: Export and reporting (PDF, CSV)
@@ -315,11 +392,15 @@ charlie@test.com / password123
 - iPad optimization
 - Expense editing and deletion
 - Group settings (rename, remove members)
-- Activity feed
-- Search and filtering
-- Data export
-- Profile customization
+- Advanced filtering and search
+- Data export to CSV/PDF
+- Profile customization with avatars
 - Expense templates
+- Recurring expenses
+- Split by shares (e.g., 2:1:1 ratio)
+- Multi-currency with exchange rates
+- Expense categories with icons
+- Charts and analytics
 
 ---
 
@@ -329,6 +410,8 @@ charlie@test.com / password123
 - Email search is case-sensitive (emails stored in lowercase)
 - No password reset functionality yet (planned for future sprint)
 - No offline mode (requires internet connection)
+- Receipt upload is mock implementation (actual Firebase Storage integration pending)
+- Cannot edit or delete expenses after creation (planned for future sprint)
 
 ---
 
@@ -419,20 +502,23 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 📚 Documentation
 
 For detailed sprint documentation and implementation guides, see:
-- Sprint 0: Foundation and Authentication
-- Sprint 1: User Profile and Private IOUs  
-- Sprint 2: Core Group Management and Basic Expenses
+- **Sprint 0**: Foundation and Authentication
+- **Sprint 1**: User Profile and Private IOUs  
+- **Sprint 2**: Core Group Management and Basic Expenses
+- **Sprint 3**: Advanced Splitting and Real-Time Ledger
+- **Sprint 4**: Settlement and Final Dashboard
 
 Each sprint includes:
 - Detailed requirements
 - Implementation steps
 - Testing procedures
 - Firebase setup instructions
+- Code documentation
 - Troubleshooting guides
 
 ---
 
-**Last Updated**: October 13, 2025  
-**Version**: 0.3.0 (Sprint 2 Complete)  
+**Last Updated**: October 18, 2025  
+**Version**: 0.5.0 (Sprint 4 Complete)  
 **Build Status**: ✅ Passing
 
