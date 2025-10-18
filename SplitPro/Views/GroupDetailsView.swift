@@ -13,6 +13,7 @@ import FirebaseFirestore
 /// This view shows:
 /// - Group name and members
 /// - Current user's net balance in the group
+<<<<<<< HEAD
 /// - Real-time activity feed / ledger of all group expenses
 /// - Split type indicators for each expense
 /// - Receipt attachment indicators
@@ -27,6 +28,12 @@ import FirebaseFirestore
 /// - Displays split type (equal, exact amounts, or percentages) for each expense
 /// - Shows receipt indicators when receipts are attached
 /// - Enhanced expense row with better visual hierarchy
+=======
+/// - List of all group expenses (real-time updates)
+/// - Option to add new expenses
+///
+/// Features real-time updates via Firestore snapshot listeners.
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 struct GroupDetailsView: View {
     
     // MARK: - Properties
@@ -57,12 +64,15 @@ struct GroupDetailsView: View {
     /// Controls whether to show the Add Expense sheet
     @State private var showingAddExpense: Bool = false
     
+<<<<<<< HEAD
     /// Controls whether to show the Settle Up sheet
     @State private var showingSettlement: Bool = false
     
     /// Simplified payment suggestions
     @State private var simplifiedPayments: [TransactionSuggestion] = []
     
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     /// Error message (if any)
     @State private var errorMessage: String? = nil
     
@@ -89,11 +99,16 @@ struct GroupDetailsView: View {
                         // Members section
                         membersSection
                         
+<<<<<<< HEAD
                         // Simplified payments section (Sprint 4)
                         simplifiedPaymentsSection
                         
                         // Quick action buttons
                         actionButtonsSection
+=======
+                        // Quick action button
+                        addExpenseButton
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
                         
                         // Expenses list
                         expensesSection
@@ -107,9 +122,12 @@ struct GroupDetailsView: View {
         .sheet(isPresented: $showingAddExpense) {
             AddExpenseView(group: group, members: members)
         }
+<<<<<<< HEAD
         .sheet(isPresented: $showingSettlement) {
             RecordSettlementView(group: group, members: members)
         }
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
         .task {
             await loadData()
             setupExpensesListener()
@@ -211,6 +229,7 @@ struct GroupDetailsView: View {
         }
     }
     
+<<<<<<< HEAD
     /// Simplified payments section showing debt simplification results
     @ViewBuilder
     private var simplifiedPaymentsSection: some View {
@@ -270,6 +289,23 @@ struct GroupDetailsView: View {
                 .foregroundColor(.white)
                 .cornerRadius(12)
             }
+=======
+    /// Add expense button
+    private var addExpenseButton: some View {
+        Button(action: {
+            showingAddExpense = true
+        }) {
+            HStack {
+                Image(systemName: "plus.circle.fill")
+                Text("Add Expense")
+                    .fontWeight(.semibold)
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(12)
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
         }
     }
     
@@ -367,7 +403,11 @@ struct GroupDetailsView: View {
         expensesListener = FirestoreService.listenToGroupExpenses(groupID: group.id) { [self] updatedExpenses in
             self.expenses = updatedExpenses
             
+<<<<<<< HEAD
             // Recalculate balance and simplified payments when expenses change
+=======
+            // Recalculate balance when expenses change
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
             Task {
                 if let currentUserID = authManager.currentUserUID {
                     do {
@@ -375,9 +415,12 @@ struct GroupDetailsView: View {
                             userID: currentUserID,
                             groupID: group.id
                         )
+<<<<<<< HEAD
                         
                         // Calculate simplified payments
                         await recalculateSimplifiedPayments()
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
                     } catch {
                         print("❌ Failed to recalculate balance: \(error)")
                     }
@@ -386,6 +429,7 @@ struct GroupDetailsView: View {
         }
     }
     
+<<<<<<< HEAD
     /// Recalculates the simplified payment suggestions
     private func recalculateSimplifiedPayments() async {
         // Get member IDs for this group
@@ -402,6 +446,8 @@ struct GroupDetailsView: View {
         )
     }
     
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     /// Formats a currency value
     private func formatCurrency(_ value: Double) -> String {
         let formatter = NumberFormatter()
@@ -414,12 +460,15 @@ struct GroupDetailsView: View {
 // MARK: - Group Expense Row View
 
 /// Individual row view for displaying a group expense
+<<<<<<< HEAD
 ///
 /// This view shows:
 /// - Expense description with receipt indicator (if available)
 /// - Total amount and split type
 /// - Who paid and when
 /// - Current user's share
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 struct GroupExpenseRowView: View {
     let expense: GroupExpense
     let currentUserID: String
@@ -428,6 +477,7 @@ struct GroupExpenseRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
+<<<<<<< HEAD
                 // Expense description with receipt indicator
                 HStack(spacing: 6) {
                     Text(expense.description)
@@ -441,6 +491,12 @@ struct GroupExpenseRowView: View {
                             .foregroundColor(.blue)
                     }
                 }
+=======
+                // Expense description
+                Text(expense.description)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
                 
                 Spacer()
                 
@@ -450,6 +506,7 @@ struct GroupExpenseRowView: View {
                     .fontWeight(.semibold)
             }
             
+<<<<<<< HEAD
             // Split type and paid by info
             HStack {
                 // Split type indicator
@@ -466,6 +523,10 @@ struct GroupExpenseRowView: View {
                     .foregroundColor(.secondary)
                 
                 // Who paid
+=======
+            // Who paid
+            HStack {
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
                 Image(systemName: "person.fill")
                     .font(.caption)
                     .foregroundColor(.secondary)
@@ -493,6 +554,7 @@ struct GroupExpenseRowView: View {
                         .font(.caption)
                         .foregroundColor(.orange)
                 }
+<<<<<<< HEAD
                 
                 Spacer()
                 
@@ -510,6 +572,8 @@ struct GroupExpenseRowView: View {
                     .background(Color.blue.opacity(0.1))
                     .cornerRadius(4)
                 }
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
             }
         }
         .padding()
@@ -517,7 +581,10 @@ struct GroupExpenseRowView: View {
         .cornerRadius(12)
     }
     
+<<<<<<< HEAD
     /// Returns the display name of who paid
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     private var payerName: String {
         if expense.isPaidBy(userID: currentUserID) {
             return "you"
@@ -527,6 +594,7 @@ struct GroupExpenseRowView: View {
     }
 }
 
+<<<<<<< HEAD
 // MARK: - Simplified Payment Row View
 
 /// Individual row view for displaying a simplified payment suggestion
@@ -609,6 +677,8 @@ struct SimplifiedPaymentRowView: View {
     }
 }
 
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 // MARK: - Preview
 
 #Preview {

@@ -7,6 +7,7 @@
 
 import Foundation
 
+<<<<<<< HEAD
 /// SplitType: Enum representing the different ways an expense can be split
 ///
 /// This enum defines the supported split methods for group expenses:
@@ -48,22 +49,31 @@ enum SplitType: String, Codable {
     }
 }
 
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 /// GroupExpense: Represents an expense shared among group members
 ///
 /// This model tracks expenses that are split among multiple people in a group.
 /// The expense records:
 /// - Who paid the total bill (paidByID)
 /// - How much each member owes (memberOwed dictionary)
+<<<<<<< HEAD
 /// - The split method used (equal, exact amounts, or percentages)
 /// - Optional receipt image URL
 ///
 /// Example (Equal Split):
+=======
+/// - The split method used (currently only "equal" is supported)
+///
+/// Example:
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 /// - Alice paid $60 for dinner
 /// - Group has 3 members: Alice, Bob, Charlie
 /// - Split equally: each owes $20
 /// - memberOwed = ["alice_id": 0, "bob_id": 20, "charlie_id": 20]
 /// - (Alice owes $0 because she paid)
 ///
+<<<<<<< HEAD
 /// Example (Exact Amounts):
 /// - Bob paid $60 for dinner
 /// - Alice owes $30, Bob owes $0, Charlie owes $30
@@ -74,6 +84,8 @@ enum SplitType: String, Codable {
 /// - Alice 50%, Bob 30%, Charlie 20%
 /// - memberOwed = ["alice_id": 50, "bob_id": 30, "charlie_id": 0]
 ///
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 /// Firestore Path: artifacts/{appId}/public/data/groups/{groupID}/expenses/{expenseID}
 struct GroupExpense: Codable, Identifiable, Equatable {
     
@@ -98,11 +110,18 @@ struct GroupExpense: Codable, Identifiable, Equatable {
     var paidByID: String
     
     /// Method used to split the expense
+<<<<<<< HEAD
     /// Options: .equal, .exactAmounts, .percentages
     /// - .equal: Total divided equally among all members
     /// - .exactAmounts: Each member has a specific dollar amount they owe
     /// - .percentages: Each member owes a percentage of the total
     var splitType: SplitType
+=======
+    /// Current options: "equal" (more options in future sprints)
+    /// - "equal": Total divided equally among all members
+    /// - Future: "percentage", "shares", "exact amounts", etc.
+    var splitType: String
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     
     /// Dictionary mapping member UID to the amount they owe
     /// Key: Firebase UID of the member
@@ -118,11 +137,14 @@ struct GroupExpense: Codable, Identifiable, Equatable {
     /// Date when this expense was recorded
     var date: Date
     
+<<<<<<< HEAD
     /// Optional URL to the receipt image stored in Firebase Storage
     /// This is a mock implementation for Sprint 3
     /// In a production app, this would link to an actual uploaded receipt image
     var receiptURL: String?
     
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     // MARK: - Initialization
     
     /// Default initializer for creating a new GroupExpense
@@ -133,20 +155,32 @@ struct GroupExpense: Codable, Identifiable, Equatable {
     ///   - description: What the expense was for
     ///   - totalAmount: Total bill amount
     ///   - paidByID: UID of the person who paid
+<<<<<<< HEAD
     ///   - splitType: How to split the expense (defaults to .equal)
     ///   - memberOwed: Dictionary of member UIDs to amounts owed
     ///   - date: When the expense occurred (defaults to now)
     ///   - receiptURL: Optional URL to receipt image (defaults to nil)
+=======
+    ///   - splitType: How to split the expense (defaults to "equal")
+    ///   - memberOwed: Dictionary of member UIDs to amounts owed
+    ///   - date: When the expense occurred (defaults to now)
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     init(
         id: String = UUID().uuidString,
         groupID: String,
         description: String,
         totalAmount: Double,
         paidByID: String,
+<<<<<<< HEAD
         splitType: SplitType = .equal,
         memberOwed: [String: Double],
         date: Date = Date(),
         receiptURL: String? = nil
+=======
+        splitType: String = "equal",
+        memberOwed: [String: Double],
+        date: Date = Date()
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     ) {
         self.id = id
         self.groupID = groupID
@@ -156,7 +190,10 @@ struct GroupExpense: Codable, Identifiable, Equatable {
         self.splitType = splitType
         self.memberOwed = memberOwed
         self.date = date
+<<<<<<< HEAD
         self.receiptURL = receiptURL
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     }
     
     // MARK: - Coding Keys
@@ -171,7 +208,10 @@ struct GroupExpense: Codable, Identifiable, Equatable {
         case splitType = "split_type"
         case memberOwed = "member_owed"
         case date
+<<<<<<< HEAD
         case receiptURL = "receipt_url"
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     }
     
     // MARK: - Computed Properties
@@ -205,6 +245,7 @@ struct GroupExpense: Codable, Identifiable, Equatable {
         return totalAmount / Double(memberOwed.count)
     }
     
+<<<<<<< HEAD
     /// Indicates whether this expense has a receipt attached
     var hasReceipt: Bool {
         return receiptURL != nil && !(receiptURL?.isEmpty ?? true)
@@ -215,6 +256,8 @@ struct GroupExpense: Codable, Identifiable, Equatable {
         return splitType.displayName
     }
     
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     // MARK: - Helper Methods
     
     /// Gets the amount a specific member owes for this expense
@@ -269,7 +312,11 @@ struct GroupExpense: Codable, Identifiable, Equatable {
 
 #if DEBUG
 extension GroupExpense {
+<<<<<<< HEAD
     /// Sample expense for SwiftUI previews (Equal Split)
+=======
+    /// Sample expense for SwiftUI previews
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     static var sample: GroupExpense {
         GroupExpense(
             id: "expense-1",
@@ -277,18 +324,30 @@ extension GroupExpense {
             description: "Dinner at Italian restaurant",
             totalAmount: 60.0,
             paidByID: "user-1",
+<<<<<<< HEAD
             splitType: .equal,
+=======
+            splitType: "equal",
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
             memberOwed: [
                 "user-1": 0.0,    // Alice paid, so owes 0
                 "user-2": 20.0,   // Bob owes $20
                 "user-3": 20.0    // Charlie owes $20
             ],
+<<<<<<< HEAD
             date: Date(),
             receiptURL: "https://example.com/receipts/mock-receipt-1.jpg"
         )
     }
     
     /// Array of sample expenses for testing (various split types)
+=======
+            date: Date()
+        )
+    }
+    
+    /// Array of sample expenses for testing
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     static var sampleArray: [GroupExpense] {
         [
             GroupExpense(
@@ -296,27 +355,39 @@ extension GroupExpense {
                 description: "Grocery shopping",
                 totalAmount: 45.50,
                 paidByID: "user-1",
+<<<<<<< HEAD
                 splitType: .equal,
                 memberOwed: ["user-1": 0, "user-2": 22.75, "user-3": 22.75],
                 receiptURL: "https://example.com/receipts/mock-receipt-2.jpg"
+=======
+                memberOwed: ["user-1": 0, "user-2": 22.75, "user-3": 22.75]
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
             ),
             GroupExpense(
                 groupID: "group-1",
                 description: "Utilities bill",
                 totalAmount: 120.0,
                 paidByID: "user-2",
+<<<<<<< HEAD
                 splitType: .percentages,
                 memberOwed: ["user-1": 48.0, "user-2": 0, "user-3": 36.0],
                 receiptURL: nil
+=======
+                memberOwed: ["user-1": 40.0, "user-2": 0, "user-3": 40.0]
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
             ),
             GroupExpense(
                 groupID: "group-1",
                 description: "Movie tickets",
                 totalAmount: 36.0,
                 paidByID: "user-3",
+<<<<<<< HEAD
                 splitType: .exactAmounts,
                 memberOwed: ["user-1": 15.0, "user-2": 15.0, "user-3": 0],
                 receiptURL: nil
+=======
+                memberOwed: ["user-1": 12.0, "user-2": 12.0, "user-3": 0]
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
             )
         ]
     }

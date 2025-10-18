@@ -54,6 +54,7 @@ class AuthenticationManager: ObservableObject {
     /// Automatically refreshes when groups are created/modified
     @Published var activeGroups: [Group] = []
     
+<<<<<<< HEAD
     /// Global net balance dictionary tracking balance with every friend/member
     /// Key: Friend/member UID
     /// Value: Net balance (positive = they owe you, negative = you owe them)
@@ -75,6 +76,8 @@ class AuthenticationManager: ObservableObject {
     /// Total amount you owe across all groups and IOUs
     @Published var totalYouOwe: Double = 0.0
     
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     /// Stores error messages to be displayed to the user
     /// This is cleared before each authentication operation
     @Published var errorMessage: String? = nil
@@ -115,9 +118,12 @@ class AuthenticationManager: ObservableObject {
                     self.currentUserProfile = nil
                     self.friends = []
                     self.activeGroups = []
+<<<<<<< HEAD
                     self.globalNetBalance = [:]
                     self.totalOwedToYou = 0.0
                     self.totalYouOwe = 0.0
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
                     
                     // Remove groups listener if it exists
                     self.groupsListener?.remove()
@@ -255,9 +261,12 @@ class AuthenticationManager: ObservableObject {
             currentUserProfile = nil
             friends = []
             activeGroups = []
+<<<<<<< HEAD
             globalNetBalance = [:]
             totalOwedToYou = 0.0
             totalYouOwe = 0.0
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
             
             // Remove groups listener
             groupsListener?.remove()
@@ -279,8 +288,12 @@ class AuthenticationManager: ObservableObject {
     /// - Parameter uid: The Firebase UID of the user
     ///
     /// This is called automatically when a user signs in through the auth state listener.
+<<<<<<< HEAD
     /// After loading the profile, it automatically fetches the user's friends and
     /// sets up real-time listeners for groups, which triggers balance calculation.
+=======
+    /// After loading the profile, it automatically fetches the user's friends.
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     private func loadUserProfile(uid: String) async {
         do {
             // Fetch the user profile from Firestore
@@ -292,7 +305,10 @@ class AuthenticationManager: ObservableObject {
             await fetchFriends()
             
             // Set up real-time listener for groups
+<<<<<<< HEAD
             // This will trigger balance calculation when groups are loaded
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
             setupGroupsListener(uid: uid)
             
         } catch {
@@ -350,8 +366,11 @@ class AuthenticationManager: ObservableObject {
     /// - A group the user is in is modified
     /// - A group the user was in is deleted
     ///
+<<<<<<< HEAD
     /// After groups are updated, it triggers a balance recalculation.
     ///
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     /// - Parameter uid: The Firebase UID of the user
     private func setupGroupsListener(uid: String) {
         // Remove existing listener if any
@@ -362,6 +381,7 @@ class AuthenticationManager: ObservableObject {
             guard let self = self else { return }
             self.activeGroups = groups
             print("✅ Active groups updated: \(groups.count) groups")
+<<<<<<< HEAD
             
             // Recalculate balances when groups change
             Task {
@@ -436,6 +456,11 @@ class AuthenticationManager: ObservableObject {
         print("   Total you owe: $\(totalYouOwe)")
     }
     
+=======
+        }
+    }
+    
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     // MARK: - Private Helper Methods
     
     /// Converts Firebase Authentication error codes into user-friendly messages

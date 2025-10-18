@@ -535,6 +535,7 @@ class FirestoreService {
     
     // MARK: - Group Expense Operations
     
+<<<<<<< HEAD
     /// Logs a new group expense to Firestore
     ///
     /// This function handles all split types (equal, exact amounts, percentages) automatically.
@@ -572,12 +573,26 @@ class FirestoreService {
         print("💰 Logging group expense: \(expense.description) for group: \(groupID)")
         print("   Split Type: \(expense.splitType.displayName)")
         print("   Receipt: \(expense.hasReceipt ? "Attached" : "None")")
+=======
+    /// Logs a new group expense
+    ///
+    /// - Parameters:
+    ///   - expense: The GroupExpense object to save
+    ///   - groupID: The ID of the group this expense belongs to
+    /// - Throws: Error if the write fails
+    static func logGroupExpense(expense: GroupExpense, groupID: String) async throws {
+        print("💰 Logging group expense: \(expense.description) for group: \(groupID)")
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
         
         // Get reference to the expense document
         let expenseRef = db.collection(groupExpensesPath(groupID: groupID))
             .document(expense.id)
         
+<<<<<<< HEAD
         // Save the expense (Codable automatically handles all split types and optional receiptURL)
+=======
+        // Save the expense
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
         try expenseRef.setData(from: expense)
         
         print("✅ Group expense logged: \(expense.description) - \(expense.formattedTotalAmount)")
@@ -670,6 +685,7 @@ class FirestoreService {
         print("💵 Balance: \(balance)")
         return balance
     }
+<<<<<<< HEAD
     
     // MARK: - Settlement Operations
     
@@ -802,6 +818,8 @@ class FirestoreService {
         
         return mockURL
     }
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 }
 
 // MARK: - Custom Errors

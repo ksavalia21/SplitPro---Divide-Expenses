@@ -3,17 +3,25 @@
 //  SplitPro
 //
 //  Created by Keyur Savalia on 10/13/25.
+<<<<<<< HEAD
 //  Updated for Sprint 3: Advanced Splitting and Receipt Attachments
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 //
 
 import SwiftUI
 
+<<<<<<< HEAD
 /// AddExpenseView: Interface for adding a new group expense with flexible split options
+=======
+/// AddExpenseView: Interface for adding a new group expense with equal split
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 ///
 /// This view allows users to:
 /// - Enter expense description
 /// - Enter total amount
 /// - Select who paid
+<<<<<<< HEAD
 /// - Choose split type (equal, exact amounts, or percentages)
 /// - Configure splits based on selected type
 /// - Attach receipt images (mock implementation)
@@ -22,6 +30,14 @@ import SwiftUI
 /// - **Equal**: Total amount divided equally among all members
 /// - **Exact Amounts**: User specifies exact dollar amount each member owes
 /// - **Percentages**: User specifies percentage of total each member owes (must sum to 100%)
+=======
+/// - Automatically calculate equal split among all members
+///
+/// Split Logic (Equal):
+/// - Total amount is divided equally among all group members
+/// - The person who paid owes $0 (already paid their share)
+/// - Everyone else owes their equal share to the payer
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 struct AddExpenseView: View {
     
     // MARK: - Properties
@@ -49,6 +65,7 @@ struct AddExpenseView: View {
     @State private var totalAmount: String = ""
     
     /// ID of the member who paid
+<<<<<<< HEAD
     @State private var paidByID: String = ""
     
     /// Selected split type
@@ -62,6 +79,9 @@ struct AddExpenseView: View {
     
     /// Mock state for receipt attachment
     @State private var hasAttachedReceipt: Bool = false
+=======
+    @State private var paidByID: String
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     
     /// Indicates if saving is in progress
     @State private var isSaving: Bool = false
@@ -71,15 +91,24 @@ struct AddExpenseView: View {
     
     // MARK: - Initialization
     
+<<<<<<< HEAD
     /// Initializer with group and members
     init(group: Group, members: [User]) {
         self.group = group
         self.members = members
+=======
+    /// Initializer with default payer as current user
+    init(group: Group, members: [User]) {
+        self.group = group
+        self.members = members
+        // Default payer to current user if they're in the group
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
         _paidByID = State(initialValue: "")
     }
     
     // MARK: - Computed Properties
     
+<<<<<<< HEAD
     /// True if all required fields are filled and valid
     private var isFormValid: Bool {
         guard !description.isEmpty,
@@ -98,6 +127,14 @@ struct AddExpenseView: View {
         case .percentages:
             return validatePercentages()
         }
+=======
+    /// True if all required fields are filled
+    private var isFormValid: Bool {
+        !description.isEmpty &&
+        !totalAmount.isEmpty &&
+        Double(totalAmount) != nil &&
+        !paidByID.isEmpty
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     }
     
     /// Calculated amount per person (equal split)
@@ -106,6 +143,7 @@ struct AddExpenseView: View {
         return total / Double(members.count)
     }
     
+<<<<<<< HEAD
     /// Total of all exact amounts entered
     private var totalExactAmounts: Double {
         var total = 0.0
@@ -134,6 +172,14 @@ struct AddExpenseView: View {
             }
         }
         return total
+=======
+    /// Formatted per-person amount
+    private var formattedPerPerson: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "USD"
+        return formatter.string(from: NSNumber(value: perPersonAmount)) ?? "$0.00"
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     }
     
     // MARK: - Body
@@ -150,6 +196,7 @@ struct AddExpenseView: View {
                 // Paid by selector
                 paidBySection
                 
+<<<<<<< HEAD
                 // Split type picker
                 splitTypeSection
                 
@@ -158,6 +205,10 @@ struct AddExpenseView: View {
                 
                 // Receipt attachment
                 receiptSection
+=======
+                // Split preview
+                splitPreviewSection
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
                 
                 // Error message (if any)
                 if let error = errorMessage {
@@ -186,7 +237,17 @@ struct AddExpenseView: View {
                 }
             }
             .onAppear {
+<<<<<<< HEAD
                 setupInitialState()
+=======
+                // Set default payer to current user
+                if let currentUserID = authManager.currentUserUID,
+                   members.contains(where: { $0.id == currentUserID }) {
+                    paidByID = currentUserID
+                } else if let firstMember = members.first {
+                    paidByID = firstMember.id
+                }
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
             }
         }
     }
@@ -242,6 +303,7 @@ struct AddExpenseView: View {
         }
     }
     
+<<<<<<< HEAD
     /// Section for selecting split type
     private var splitTypeSection: some View {
         Section {
@@ -531,11 +593,68 @@ struct AddExpenseView: View {
                     .foregroundColor(.red)
                     .padding(.top, 4)
             }
+=======
+    /// Section showing split preview
+    private var splitPreviewSection: some View {
+        Section {
+            VStack(spacing: 12) {
+                // Split type indicator
+                HStack {
+                    Image(systemName: "equal.circle.fill")
+                        .foregroundColor(.blue)
+                    Text("Split Equally")
+                        .fontWeight(.medium)
+                    Spacer()
+                }
+                
+                Divider()
+                
+                // Per-person amount
+                HStack {
+                    Text("Amount per person:")
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Text(formattedPerPerson)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.blue)
+                }
+                
+                // Member breakdown
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Member Breakdown:")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    ForEach(members) { member in
+                        HStack {
+                            Text(memberDisplayName(member))
+                                .font(.caption)
+                            
+                            Spacer()
+                            
+                            if member.id == paidByID {
+                                Text("Paid \(formattedPerPerson)")
+                                    .font(.caption)
+                                    .foregroundColor(.green)
+                            } else {
+                                Text("Owes \(formattedPerPerson)")
+                                    .font(.caption)
+                                    .foregroundColor(.orange)
+                            }
+                        }
+                    }
+                }
+                .padding(.top, 8)
+            }
+        } header: {
+            Text("Split Details")
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
         }
     }
     
     // MARK: - Helper Methods
     
+<<<<<<< HEAD
     /// Sets up initial state when view appears
     private func setupInitialState() {
         // Set default payer to current user
@@ -553,6 +672,8 @@ struct AddExpenseView: View {
         }
     }
     
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     /// Returns display name with (You) indicator if applicable
     private func memberDisplayName(_ member: User) -> String {
         if member.id == authManager.currentUserUID {
@@ -562,6 +683,7 @@ struct AddExpenseView: View {
         }
     }
     
+<<<<<<< HEAD
     /// Returns footer text for split type section
     private var splitTypeFooterText: String {
         switch selectedSplitType {
@@ -620,6 +742,8 @@ struct AddExpenseView: View {
         return formatter.string(from: NSNumber(value: value)) ?? "$0.00"
     }
     
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     /// Saves the expense to Firestore
     private func saveExpense() {
         guard let amountValue = Double(totalAmount) else {
@@ -637,6 +761,7 @@ struct AddExpenseView: View {
             return
         }
         
+<<<<<<< HEAD
         // Additional validation based on split type
         switch selectedSplitType {
         case .equal:
@@ -653,11 +778,14 @@ struct AddExpenseView: View {
             }
         }
         
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
         isSaving = true
         errorMessage = nil
         
         Task {
             do {
+<<<<<<< HEAD
                 // Calculate memberOwed dictionary based on split type
                 var memberOwed: [String: Double] = [:]
                 
@@ -705,16 +833,39 @@ struct AddExpenseView: View {
                     )
                 }
                 
+=======
+                // Calculate equal split for each member
+                let perPerson = amountValue / Double(members.count)
+                
+                // Build memberOwed dictionary
+                var memberOwed: [String: Double] = [:]
+                for member in members {
+                    if member.id == paidByID {
+                        // The person who paid owes 0 (they already paid their share)
+                        memberOwed[member.id] = 0.0
+                    } else {
+                        // Everyone else owes their equal share
+                        memberOwed[member.id] = perPerson
+                    }
+                }
+                
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
                 // Create the expense object
                 let expense = GroupExpense(
                     groupID: group.id,
                     description: description,
                     totalAmount: amountValue,
                     paidByID: paidByID,
+<<<<<<< HEAD
                     splitType: selectedSplitType,
                     memberOwed: memberOwed,
                     date: Date(),
                     receiptURL: receiptURL
+=======
+                    splitType: "equal",
+                    memberOwed: memberOwed,
+                    date: Date()
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
                 )
                 
                 // Save to Firestore
@@ -726,6 +877,10 @@ struct AddExpenseView: View {
                 print("✅ Group expense saved successfully")
                 
                 // Dismiss the view
+<<<<<<< HEAD
+=======
+                // The expense list will automatically update via the snapshot listener
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
                 dismiss()
                 
             } catch {
@@ -748,3 +903,7 @@ struct AddExpenseView: View {
     )
     .environmentObject(authManager)
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18

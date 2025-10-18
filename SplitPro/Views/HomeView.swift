@@ -73,6 +73,7 @@ struct HomeView: View {
 
 // MARK: - Dashboard View
 
+<<<<<<< HEAD
 /// Global Dashboard showing comprehensive financial overview
 ///
 /// **Sprint 4 Enhancements:**
@@ -80,6 +81,9 @@ struct HomeView: View {
 /// - Individual balance breakdown by group and friend
 /// - Real-time updates from globalNetBalance
 /// - Color-coded indicators for positive/negative balances
+=======
+/// Main dashboard showing overview and quick actions
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 struct DashboardView: View {
     @EnvironmentObject var authManager: AuthenticationManager
     @State private var showingLogIOU = false
@@ -96,12 +100,15 @@ struct DashboardView: View {
                         // Welcome card
                         welcomeCard
                         
+<<<<<<< HEAD
                         // Global balance summary (Sprint 4)
                         globalBalanceSummarySection
                         
                         // Individual balances breakdown (Sprint 4)
                         individualBalancesSection
                         
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
                         // Quick stats
                         quickStatsSection
                         
@@ -161,6 +168,7 @@ struct DashboardView: View {
         .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
     
+<<<<<<< HEAD
     /// Global balance summary cards (Sprint 4)
     private var globalBalanceSummarySection: some View {
         VStack(spacing: 12) {
@@ -251,6 +259,8 @@ struct DashboardView: View {
         return formatter.string(from: NSNumber(value: abs(value))) ?? "$0.00"
     }
     
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
     private var quickStatsSection: some View {
         VStack(spacing: 12) {
             HStack {
@@ -340,6 +350,7 @@ struct StatCard: View {
     }
 }
 
+<<<<<<< HEAD
 // MARK: - Balance Card (Sprint 4)
 
 /// Card displaying overall balance summary (You Owe / You Are Owed)
@@ -458,6 +469,8 @@ struct IndividualBalanceRow: View {
     }
 }
 
+=======
+>>>>>>> ad50dba30aad4e9f230e0c481146a6b1e65b8a18
 // MARK: - Profile View
 
 /// User profile and settings view
